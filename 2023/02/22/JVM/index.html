@@ -1,0 +1,322 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>JVM | LuckyFeng的博客</title><meta name="description" content="JVM"><meta name="keywords" content="java"><meta name="author" content="覃烽"><meta name="copyright" content="覃烽"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="JVM"><meta name="twitter:description" content="JVM"><meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><meta property="og:type" content="article"><meta property="og:title" content="JVM"><meta property="og:url" content="http://example.com/2023/02/22/JVM/"><meta property="og:site_name" content="LuckyFeng的博客"><meta property="og:description" content="JVM"><meta property="og:image" content="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'false'
+var t = Cookies.get("theme");
+if (autoChangeMode == '1'){
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+if (t === undefined){
+  if (isLightMode) activateLightMode()
+  else if (isDarkMode) activateDarkMode()
+  else if (isNotSpecified || hasNoSupport){
+    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+    now = new Date();
+    hour = now.getHours();
+    isNight = hour < 6 || hour >= 18
+    isNight ? activateDarkMode() : activateLightMode()
+}
+} else if (t == 'light') activateLightMode()
+else activateDarkMode()
+
+
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
+
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="canonical" href="http://example.com/2023/02/22/JVM/"><link rel="next" title="Elasticsearch搜索引擎" href="http://example.com/2022/02/06/Elasticsearch%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight_copy: 'false',
+  highlight_lang: 'true',
+  highlight_shrink: 'false',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  copyright: undefined,
+  copy_copyright_js: false,
+  ClickShowText: undefined,
+  medium_zoom: 'false',
+  Snackbar: undefined
+  
+}</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">LuckyFeng的博客</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 框架</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 其他</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fa fa-music"></i><span> Music</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fa fa-film"></i><span> Movie</span></a></li></ul></div></div></span><span class="pull_right" id="search_button"></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="https://s3.bmp.ovh/imgs/2021/08/537218da738c4aaa.jpg" onerror="onerror=null;src='/img/friend_404.gif'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">38</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">12</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">11</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 框架</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 其他</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fa fa-music"></i><span> Music</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fa fa-film"></i><span> Movie</span></a></li></ul></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-1"><a class="toc_mobile_items-link" href="#JVM"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">JVM</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA"><span class="toc_mobile_items-number">1.1.</span> <span class="toc_mobile_items-text">运行时数据区</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#%E6%A0%88%E5%B8%A7"><span class="toc_mobile_items-number">1.1.1.</span> <span class="toc_mobile_items-text">栈帧</span></a></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8"><span class="toc_mobile_items-number">1.2.</span> <span class="toc_mobile_items-text">垃圾回收器</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link"><span class="toc_mobile_items-number">1.2.1.</span> <span class="toc_mobile_items-text"></span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#Serial-GC"><span class="toc_mobile_items-number">1.2.2.</span> <span class="toc_mobile_items-text">Serial GC</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#ParNew-GC-Serial-Old-GC"><span class="toc_mobile_items-number">1.2.3.</span> <span class="toc_mobile_items-text">ParNew GC&#x2F;Serial Old GC</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#Parallel-Scavenge-GC-Parallel-Old-GC"><span class="toc_mobile_items-number">1.2.4.</span> <span class="toc_mobile_items-text">Parallel Scavenge GC&#x2F;Parallel Old GC</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#CMS-GC"><span class="toc_mobile_items-number">1.2.5.</span> <span class="toc_mobile_items-text">CMS GC</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#%E9%98%B6%E6%AE%B5%E2%91%A0%EF%BC%9A%E5%88%9D%E5%A7%8B%E6%A0%87%E8%AE%B0"><span class="toc_mobile_items-number">1.2.5.1.</span> <span class="toc_mobile_items-text">阶段①：初始标记</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#%E9%98%B6%E6%AE%B5%E2%91%A1%EF%BC%9A%E5%B9%B6%E5%8F%91%E6%A0%87%E8%AE%B0"><span class="toc_mobile_items-number">1.2.5.2.</span> <span class="toc_mobile_items-text">阶段②：并发标记</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#%E9%98%B6%E6%AE%B5%E2%91%A2%EF%BC%9A%E9%87%8D%E6%96%B0%E6%A0%87%E8%AE%B0"><span class="toc_mobile_items-number">1.2.5.3.</span> <span class="toc_mobile_items-text">阶段③：重新标记</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#%E9%98%B6%E6%AE%B5%E2%91%A3%EF%BC%9A%E5%B9%B6%E5%8F%91%E6%B8%85%E7%90%86"><span class="toc_mobile_items-number">1.2.5.4.</span> <span class="toc_mobile_items-text">阶段④：并发清理</span></a></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#G1-GC"><span class="toc_mobile_items-number">1.2.6.</span> <span class="toc_mobile_items-text">G1 GC</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#Full-GC%E8%A7%A6%E5%8F%91%E6%9D%A1%E4%BB%B6"><span class="toc_mobile_items-number">1.2.7.</span> <span class="toc_mobile_items-text">Full GC触发条件</span></a></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#%E5%9F%BA%E7%A1%80"><span class="toc_mobile_items-number">1.3.</span> <span class="toc_mobile_items-text">基础</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="toc_mobile_items-number">1.3.1.</span> <span class="toc_mobile_items-text">类加载器</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#%E2%91%A0-%E5%8A%A0%E8%BD%BD"><span class="toc_mobile_items-number">1.3.1.1.</span> <span class="toc_mobile_items-text">① 加载</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#%E2%91%A1-%E8%BF%9E%E6%8E%A5"><span class="toc_mobile_items-number">1.3.1.2.</span> <span class="toc_mobile_items-text">② 连接</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#%E2%91%A2-%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc_mobile_items-number">1.3.1.3.</span> <span class="toc_mobile_items-text">③ 初始化</span></a></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA%E8%BF%87%E7%A8%8B"><span class="toc_mobile_items-number">1.4.</span> <span class="toc_mobile_items-text">对象创建过程</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#volatitle"><span class="toc_mobile_items-number">1.4.1.</span> <span class="toc_mobile_items-text">volatitle</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#%E5%AF%B9%E8%B1%A1%E5%A6%82%E4%BD%95%E5%AE%9A%E4%BD%8D"><span class="toc_mobile_items-number">1.4.2.</span> <span class="toc_mobile_items-text">对象如何定位</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#%E5%AF%B9%E8%B1%A1%E6%80%8E%E4%B9%88%E5%88%86%E9%85%8D"><span class="toc_mobile_items-number">1.4.3.</span> <span class="toc_mobile_items-text">对象怎么分配</span></a></li></ol></li></ol></li></ol></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div class="auto_open" id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#JVM"><span class="toc-number">1.</span> <span class="toc-text">JVM</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA"><span class="toc-number">1.1.</span> <span class="toc-text">运行时数据区</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%88%E5%B8%A7"><span class="toc-number">1.1.1.</span> <span class="toc-text">栈帧</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8"><span class="toc-number">1.2.</span> <span class="toc-text">垃圾回收器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.2.1.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Serial-GC"><span class="toc-number">1.2.2.</span> <span class="toc-text">Serial GC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ParNew-GC-Serial-Old-GC"><span class="toc-number">1.2.3.</span> <span class="toc-text">ParNew GC&#x2F;Serial Old GC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Parallel-Scavenge-GC-Parallel-Old-GC"><span class="toc-number">1.2.4.</span> <span class="toc-text">Parallel Scavenge GC&#x2F;Parallel Old GC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CMS-GC"><span class="toc-number">1.2.5.</span> <span class="toc-text">CMS GC</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%B6%E6%AE%B5%E2%91%A0%EF%BC%9A%E5%88%9D%E5%A7%8B%E6%A0%87%E8%AE%B0"><span class="toc-number">1.2.5.1.</span> <span class="toc-text">阶段①：初始标记</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%B6%E6%AE%B5%E2%91%A1%EF%BC%9A%E5%B9%B6%E5%8F%91%E6%A0%87%E8%AE%B0"><span class="toc-number">1.2.5.2.</span> <span class="toc-text">阶段②：并发标记</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%B6%E6%AE%B5%E2%91%A2%EF%BC%9A%E9%87%8D%E6%96%B0%E6%A0%87%E8%AE%B0"><span class="toc-number">1.2.5.3.</span> <span class="toc-text">阶段③：重新标记</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%B6%E6%AE%B5%E2%91%A3%EF%BC%9A%E5%B9%B6%E5%8F%91%E6%B8%85%E7%90%86"><span class="toc-number">1.2.5.4.</span> <span class="toc-text">阶段④：并发清理</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#G1-GC"><span class="toc-number">1.2.6.</span> <span class="toc-text">G1 GC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Full-GC%E8%A7%A6%E5%8F%91%E6%9D%A1%E4%BB%B6"><span class="toc-number">1.2.7.</span> <span class="toc-text">Full GC触发条件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80"><span class="toc-number">1.3.</span> <span class="toc-text">基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="toc-number">1.3.1.</span> <span class="toc-text">类加载器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%91%A0-%E5%8A%A0%E8%BD%BD"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">① 加载</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%91%A1-%E8%BF%9E%E6%8E%A5"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">② 连接</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%91%A2-%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">1.3.1.3.</span> <span class="toc-text">③ 初始化</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA%E8%BF%87%E7%A8%8B"><span class="toc-number">1.4.</span> <span class="toc-text">对象创建过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#volatitle"><span class="toc-number">1.4.1.</span> <span class="toc-text">volatitle</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E5%A6%82%E4%BD%95%E5%AE%9A%E4%BD%8D"><span class="toc-number">1.4.2.</span> <span class="toc-text">对象如何定位</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E6%80%8E%E4%B9%88%E5%88%86%E9%85%8D"><span class="toc-number">1.4.3.</span> <span class="toc-text">对象怎么分配</span></a></li></ol></li></ol></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png)"><div id="post-info"><div id="post-title"><div class="posttitle">JVM</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2023-02-22<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2023-02-22</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/JVM/">JVM</a></span><div class="post-meta-wordcount"><i class="fa fa-file-word-o post-meta__icon" aria-hidden="true"></i><span>字数总计: </span><span class="word-count">6k</span><span class="post-meta__separator">|</span><i class="fa fa-clock-o post-meta__icon" aria-hidden="true"></i><span>阅读时长: 18 分钟</span><span class="post-meta__separator">|</span><i class="fa fa-eye post-meta__icon" aria-hidden="true">       </i><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><h1 id="JVM"><a href="#JVM" class="headerlink" title="JVM"></a>JVM</h1><h2 id="运行时数据区"><a href="#运行时数据区" class="headerlink" title="运行时数据区"></a>运行时数据区</h2><blockquote>
+<p>推荐运行时数据区学习视频：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1f441127WK?p=6&amp;spm_id_from=pageDriver&amp;vd_source=dd5d1ef71c78ae671bcb138273ecb421">https://www.bilibili.com/video/BV1f441127WK?p=6&amp;spm_id_from=pageDriver&amp;vd_source=dd5d1ef71c78ae671bcb138273ecb421</a></p>
+</blockquote>
+<p><img data-src="https://s3.bmp.ovh/imgs/2023/02/21/01b9cd12a65f3744.png" class="lazyload"></p>
+<ol>
+<li><strong>方法区线程共享，虚拟机启动时创建，方法区是逻辑上堆得一部分，所以有个名字叫非堆，存储着类的结构：</strong>运行时常量池、字段和方法数据，以及方法和构造函数的代码，包括类和实例初始化和接口初始化中使用的特殊方法。<strong>内存无法满足分配请求，Java虚拟机会抛出一个内存不足OutMeoryError异常。</strong></li>
+<li><strong>堆，线程共享，主要用来给类的实例和数组提供内存空间，内存不足时会抛出OutMeoryError异常</strong></li>
+<li>假设我们Java是一个进程，每个进程下有不同的线程，然后呢我们需要一种数据结构来帮我们执行Java的方法，就引入了栈，方法进入了栈，称为压栈，但我们Java方法又分为两类，一种是我们执行的Java方法，一种是native方法，由C++编写，我们编写的Java方法称为Java虚拟机栈，native方法称为本地方法栈，我们的线程不可能执行一个方法，这时候又有了执行方法的最小单元，栈帧，有多少个方法，就压多少个栈帧。这时候有线程分配到CPU的调度，该线程去执行他的方法，栈帧执行到一半的时候，其他线程分配到CPU的调度，该线程进入就绪状态，为了判断我们线程中的栈帧执行到哪一步，引入了程序计数器的概念。</li>
+<li><strong>java虚拟机栈，执行Java方法，线程私有，栈满时抛StackOverflowError，深度。</strong></li>
+<li><strong>java本地方法栈，执行本地方法，线程私有，栈满时抛StackOverflowError，深度。</strong>栈帧记录每个方法执行的位置，方法正常执行完毕，调用return和抛出异常才会出栈。</li>
+<li><strong>程序计数器，记录程序执行的位置（每一条指令都是一行行存在的，下面有例子0，2，3），线程私有，</strong></li>
+</ol>
+<p><img data-src="https://s3.bmp.ovh/imgs/2023/02/21/2eed0069f0304ce6.png" class="lazyload"></p>
+<h3 id="栈帧"><a href="#栈帧" class="headerlink" title="栈帧"></a><strong>栈帧</strong></h3><ul>
+<li>局部变量表，存储变量，a = 10</li>
+<li>操作数栈，存储临时的数据，把数据压栈，需要数据时出栈在入栈。（不会存a，b这种）</li>
+<li>动态连接，找到方法在方法区所在的位置，存到动态连接中（这知识点不会）</li>
+<li>方法出口，放的是主方法的一些信（主方法的行），因为一个方法执行完，肯定要返回继续走主方法的程序。</li>
+</ul>
+<p><img data-src="https://s3.bmp.ovh/imgs/2023/02/21/be6313b7b0744a30.png" class="lazyload"></p>
+<p><img data-src="https://s3.bmp.ovh/imgs/2023/02/21/09cb0ac5df4d30a2.png" class="lazyload"></p>
+<p><strong>上图详细过程：</strong>局部变量表和操作数栈相关性大一点，所以连起来讲，Ⅰ先当由i = 15时，把15压栈放到操作数栈中，然后，申请一块内存，i放到局部变量表里，然后才把15从操作数栈放到局部变量表下标为1的位置，Ⅱ 8放入到操作数栈中，之后再把j放入到局部变量表中，然后才把8放入到局部变量表下标为2的位置，此时i = 15，j = 8，Ⅲ 接着往下走，把i 和 j中在操作数栈的数据出栈，把k放入到局部变量表中，再把i和j在局部变量表中的数据压栈，在出栈进行一个求和，再把求和结果入栈，流程图，指令网上有<a target="_blank" rel="noopener" href="https://www.cnblogs.com/wangbin2188/p/16020615.html%E3%80%82">https://www.cnblogs.com/wangbin2188/p/16020615.html。</a> </p>
+<p><img data-src="https://s3.bmp.ovh/imgs/2023/02/21/73cc3bde712fd8fb.png" class="lazyload"></p>
+<p><img data-src="https://s3.bmp.ovh/imgs/2023/02/21/5777632ae3997828.png" class="lazyload"></p>
+<p><strong>上图详细过程：</strong> 会解释出为什么在方法中a会去指向类中的成员变量。Ⅰ 因为a是类的属性，所以在局部变量表中会有个this指针，此时再把a在局部变量的数据放入到操作数栈中，Ⅱ  把b的数据放入到操作数栈中，压栈，再把b和c的出栈求和之后在进栈，再把进栈结果赋值到新的a中（putfield这个还能更深入）。</p>
+<p><img data-src="https://s3.bmp.ovh/imgs/2023/02/21/5996855253f61d7e.png" class="lazyload"></p>
+<h2 id="垃圾回收器"><a href="#垃圾回收器" class="headerlink" title="垃圾回收器"></a>垃圾回收器</h2><blockquote>
+<p>推荐JVM学习视频：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1S34y1m7sX?p=1&amp;vd_source=dd5d1ef71c78ae671bcb138273ecb421">https://www.bilibili.com/video/BV1S34y1m7sX?p=1&amp;vd_source=dd5d1ef71c78ae671bcb138273ecb421</a></p>
+</blockquote>
+<p><strong>重要知识补充：</strong></p>
+<ol>
+<li><strong>STW：即Stop the World，用处：当用户线程执行时，GC线程触发回收机制，此时会暂停用户线程的操作，等待GC操作结束。</strong></li>
+</ol>
+<p><strong>分类：</strong></p>
+<blockquote>
+<p>年轻代分为：① Serial GC，② ParNew GC，<strong>③ Parallel Scavenge GC</strong></p>
+<p>老年代分为： <strong>① CMS GC</strong>， ② SerialOld GC， <strong>③ Parallel Old GC</strong></p>
+<p>混合代分为：<strong>① G1GC</strong>，② ZGC</p>
+</blockquote>
+<p>其关系如下：</p>
+<h3 id><a href="#" class="headerlink" title></a><img data-src="https://s3.bmp.ovh/imgs/2023/02/19/c4a1eb8a8e268b83.png" class="lazyload"></h3><ol>
+<li><strong>1.8正在使用Paralled Scavenge GC + Paralled Old GC。</strong></li>
+<li>CMS，Serial，Serial Old，ParNew 1.7之前使用过。</li>
+<li>虚线部分不再使用。</li>
+</ol>
+<h3 id="Serial-GC"><a href="#Serial-GC" class="headerlink" title="Serial GC"></a>Serial GC</h3><p>其作为GC的鼻祖，serial意为串行，用于早期计算机由于处于单线程，单CPU的情况，当多线程的时候必须要等待GC处理完，才能继续执行任务，所以性能低下。</p>
+<h3 id="ParNew-GC-Serial-Old-GC"><a href="#ParNew-GC-Serial-Old-GC" class="headerlink" title="ParNew GC/Serial Old GC"></a>ParNew GC/Serial Old GC</h3><p>ParNew GC处理新生代，Serial Old处理老年代，他们与Serial GC最大的区别是引入了多线程并行去处理复杂的业务。处理流程如下：</p>
+<p><img data-src="https://s3.bmp.ovh/imgs/2023/02/19/a956a1635f04d1ba.png" class="lazyload"></p>
+<blockquote>
+<p>用户线程执行时，发现内存已满，需要垃圾回收，此时会促发一次STW（Stop the World）机制，清理完新生代，接着处理用户进程的业务，此时还会促发一次STW机制在处理老年代的。</p>
+</blockquote>
+<h3 id="Parallel-Scavenge-GC-Parallel-Old-GC"><a href="#Parallel-Scavenge-GC-Parallel-Old-GC" class="headerlink" title="Parallel Scavenge GC/Parallel Old GC"></a>Parallel Scavenge GC/Parallel Old GC</h3><p>Parallel Scavenge GC/Parallel Old GC，和ParNew GC/Serial Old GC的最大区别是Parallel Scavenge GC/Parallel Old GC能够达到可控制的吞吐量，且吞吐量优先。吞吐量关系图：</p>
+<p><img data-src="https://s3.bmp.ovh/imgs/2023/02/19/5f6979f6456f683b.png" class="lazyload"></p>
+<blockquote>
+<p>提供了两个参数去控制吞吐量：① 最大垃圾收集停顿事件：-XX: MaxGCPauseMills；② 控制吞吐量大小：-XX:GCTimeRatio；</p>
+</blockquote>
+<p><strong>当然你不要想多了不要异想天开的认为如果把这个数的参数设置更小一点使得整个系统变得更快</strong></p>
+<p>1、<strong>垃圾停顿时间的缩短是以牺牲吞吐量和新生代的空间为代价换来的</strong></p>
+<p>2、系统把整个新生代调小的小一点 收集300M 肯定比收集500M快 这也直接导致了收集发生更频繁 原来十秒收集一次每次停顿100毫秒 现在变成5s收集一次 每次停顿70毫秒 停顿时间的确在下降 但是吞吐量也降下来了</p>
+<blockquote>
+<p>所以又出现了能够帮我们动态调节的参数：① -<strong>XX:UseAdaptiveSizePolicy</strong></p>
+</blockquote>
+<p><strong>他可以根据当前系统运行情况动态去调整新生代的大小，Eden区和Surivivor区的比例，以及晋升老年代的对象，然后呢达到一个最合适的停顿时间和吞吐量，称谓GC的自适应调节策略</strong></p>
+<h3 id="CMS-GC"><a href="#CMS-GC" class="headerlink" title="CMS GC"></a>CMS GC</h3><p><strong>作为重点：CMS GC（并发标记GC）为将来的大型GC做了铺垫，不仅有内存碎片也有很严重的问题。所以随着版本的升级，1.6已经剔除CMS GC的使用，但仍需我们学习。其处理流程如下：</strong></p>
+<p><img data-src="https://s3.bmp.ovh/imgs/2023/02/19/d89ca56f70c7c423.png" class="lazyload"></p>
+<blockquote>
+<p><strong>可分为四个阶段：① 初始标记；② 并发标记 ③ 重新标记； ④ 并发清理；以下详细说明改图的流程</strong></p>
+</blockquote>
+<h4 id="阶段①：初始标记"><a href="#阶段①：初始标记" class="headerlink" title="阶段①：初始标记"></a><strong>阶段①：初始标记</strong></h4><p>概念：<strong>初始标记最重要的是从GC 根结点出发，找到那些活跃的对象，也就是能够被引用的对象</strong>。<strong>会促发STW</strong>，当然，新生代的对象可能引用到老年代。</p>
+<p><img data-src="https://s3.bmp.ovh/imgs/2023/02/19/8348cc110b37123b.png" class="lazyload"></p>
+<h4 id="阶段②：并发标记"><a href="#阶段②：并发标记" class="headerlink" title="阶段②：并发标记"></a><strong>阶段②：并发标记</strong></h4><p>概念：<strong>所谓的并发，指的是用户线程和回收线程同步执行，而不需要用户线程暂停，从而提高了用户线程的执行效率。</strong></p>
+<p>问题：由于用户线程和回收线程同步执行，因此随时可能会产生引用变更，<strong>解决方法此阶段设置屏障，重新标记阶段写有</strong>。比如：当我们GC扫完时，此时的用户线程执行操作时，又产生了新的垃圾对象，但是GC已经扫完，只能等待下次扫描，该垃圾称为浮动垃圾。<strong>因为CMS主要关注低延迟，因而采用并发方式，清理垃圾时，应用程序还在运行，如何采用压缩算法，则涉及到要移动应用程序的存活对象，此时不停顿，是很难处理的，一般需要停顿下，移动存活对象，再让应用程序继续运行，但这样停顿时间变长，延迟变大，所以CMS采用清除算法。</strong></p>
+<h4 id="阶段③：重新标记"><a href="#阶段③：重新标记" class="headerlink" title="阶段③：重新标记"></a><strong>阶段③：重新标记</strong></h4><p>概念：<strong>就是为了修正并发标记期间，因为用户线程继续运行而导致标记产生标动，这个阶段时间较长，主要用到三色标记算法解决。</strong></p>
+<blockquote>
+<p><strong>三色标记法：有三种颜色①黑色；②灰色；③白色。</strong></p>
+<ol>
+<li><strong>黑色：代表该对象找到所有孩子，即引用对象。不为垃圾对象</strong></li>
+<li><strong>灰色：代表该对象有爹引用他，但是可能还没开始找孩子。不为垃圾对象</strong></li>
+<li><strong>白色：代表该对象是个孤儿。垃圾对象</strong></li>
+</ol>
+<p><strong>标记流程：根节点是否有孩子，有则全部找出来，根节点标为黑色，再找根节点的孩子，该孩子暂时标为灰色，因为有爹，还没找孩子，此时外面许多个白色节点。当下次又有一个GC线程时，会从该灰色节点开始，继续往下找孩子，提高了效率。</strong></p>
+</blockquote>
+<p><img data-src="https://s3.bmp.ovh/imgs/2023/02/19/133f67142fe9aa5d.png" class="lazyload"></p>
+<p><strong>面试加分项：但是三色标记发有个问题</strong>。</p>
+<p>​    ① <strong>当B节点引用C节点，此时断开引用时</strong>，此时GC线程在执行，<strong>发现C无人使用，会认为C是个垃圾对象</strong>，需要回收。</p>
+<p><img alt="1676794422373" data-src="/2023/02/22/JVM/Users\qinfeng\AppData\Roaming\Typora\typora-user-images\1676794422373.png" class="lazyload"></p>
+<p><img data-src="https://s3.bmp.ovh/imgs/2023/02/19/566fbfd53a8168ff.png" class="lazyload"></p>
+<p>​    ② 但是<strong>此时用户线程抢到CPU的调度</strong>，<strong>A对象引用到C</strong>，问题来了：GC线程拿到调度时，从B节点开始往下找，发现没有孩子了，<strong>此时认为C是之前的白色，将C清理掉</strong>，C= Null，A发现C怎么是Null，程序执行报错。</p>
+<p><img data-src="https://s3.bmp.ovh/imgs/2023/02/19/40494c0d4c4e4aa0.png" class="lazyload"></p>
+<p><strong>为了解决这个问题，需要在初始标记阶段进行操作，初始阶段引入了一个叫卡表的（Card Table）的数据结构，就是一个索引列表。并且会对每一个对象引用进行写操作之前和之后附加了一定的逻辑，称之为“写屏障”，写屏障会在对象发生引用变化的时候，记录到该表中。</strong>如上诉问题：A引用C时，发现A时黑色，C是白色，会将A记录到卡表中。接下来到重新标记阶段时，会把卡表里的节点A重新设置成灰色，接下来会接着从A开始遍历，解决了这个问题。该方法叫<strong>增量更新</strong>。</p>
+<p><strong>由于在CMS GC中的三色标记法存在更严重的问题，该问题导致CMS GC没能继续使用。该问题有些深奥，找到工作在学。</strong></p>
+<h4 id="阶段④：并发清理"><a href="#阶段④：并发清理" class="headerlink" title="阶段④：并发清理"></a><strong>阶段④：并发清理</strong></h4><p>由于被清除的对象都是未被使用的对象，因此在清楚操作进行中，是不需要 Stop The World 的，这一步操作也是和用户线程同步执行的。</p>
+<h3 id="G1-GC"><a href="#G1-GC" class="headerlink" title="G1 GC"></a>G1 GC</h3><p><strong>G1 GC跟以前的GC区别很大，首先在我们知道，通常GC是以分代回收的，比如年轻代的Eden，s1，s2，老年代，但G1是以分区回收的，也就是划分成一小块的区域。每个区域大小相同，除了Humongous region，这个区域专门负责大对象，所有区域如下。</strong></p>
+<p><img data-src="https://s3.bmp.ovh/imgs/2023/02/19/9f3687be597853d1.png" class="lazyload"></p>
+<p><strong>G1中五种不同的Region</strong></p>
+<ul>
+<li>新生代(Eden Region)</li>
+<li>年轻代(Survivor Region)</li>
+<li>老年代(Old Region)</li>
+<li>巨型对象(Humongous Region)</li>
+<li>未分配(Free Region)</li>
+</ul>
+<p><strong>巨型对象区(Humongous Region)</strong></p>
+<blockquote>
+<p>Region中有一种特殊的<code>Humongous Region</code>,专门用来存储大对象。当大对象没有空间存储时，会触发Full GC，从而有连续的Humongous region能够存储大对象。</p>
+</blockquote>
+<p><strong>对象划分的规则</strong></p>
+<ul>
+<li>对象大小小于一半<code>Region</code>,直接存储到标记为Eden的Region</li>
+<li>对象大小大于一半<code>Region</code>但是小于一个<code>Region</code>,存储到标记为Humongous的Region中</li>
+<li>对象大小超过一个<code>Region大小</code>,存储到标记为Humongous的多个连续Region中</li>
+</ul>
+<p><strong>GC类型</strong></p>
+<ul>
+<li>youngGC:回收Eden区和Survivor区</li>
+<li>MixedGC:回收所有的新生代和部分老年区</li>
+<li>FullGC:回收整个堆</li>
+</ul>
+<p><strong>Remenber set</strong></p>
+<blockquote>
+<p>每个区域单独存在，用于记录该区域引用别的区域对象。因为区域之间都是分散的，不可能我清除的时候，扫描全盘查引用对象，所以就诞生了Remenber set。</p>
+</blockquote>
+<p><strong>回收过程</strong></p>
+<p>等待补充</p>
+<blockquote>
+<p>回收过程分为年轻代和老年代，因为采用算法不同。</p>
+</blockquote>
+<ol>
+<li>年轻代，也是采用标记复制算法，只不过多了Remenberd Set更快帮助我们复制对象到新的Service区域中。</li>
+<li>老年代，比较麻烦，也分好几个阶段采用的标记位图算法，有四个指针，两个根据对象引用情况进行位移，这方面较深，但是本质上还是采用三色标记处理浮动垃圾，对象不存在的问题。</li>
+</ol>
+<h3 id="Full-GC触发条件"><a href="#Full-GC触发条件" class="headerlink" title="Full GC触发条件"></a>Full GC触发条件</h3><blockquote>
+<p>① 在进行yong GC前，会先去判断老年代的最大连续可用空间跟新产生的对象的内存总和进行比较，Ⅰ 如果大于正常yong GC，Ⅱ 如果小于，则会去判断你是否开启了空间分配担保机制参数（-XX:+HandlePromotionFilure)，，如果没有开启，直接<strong>Full GC</strong>如果开启了，则会去赌一把判断，老年代最大连续可用空间是否大于历代YG之后进入老年代的对象所占内存空间的平均大小，如果小于，担保执行一次yong GC，如果担保失败，执行<strong>Full GC</strong>，担保成功，结束。</p>
+<p>② 简单来说即使老年代的不足，或者连续空间不足。</p>
+<p>③ 还有一些特殊的Full GC，比如Ⅰ 采用CMS GC回收器，因为该GC采用的标记-清除算法，会有内存碎片。Ⅱ 采用G1GC，因为G1属于逻辑上的分代，本质上分区，分区中有个Humongous 区，专门存取大对象，当有大对象且堆中区域不足时，Humongous也无法使用时，会调用一次Full GC，让出连续的区域，拼接成更大Humongous区。</p>
+</blockquote>
+<h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><p><strong>Java运行流程：java文件通过javac（java编译器），是将java源文件，编译成字节码文件（.class），在经过ClassLoader类加载器，装载到内存，此时可能需要将一些Java类库的代码加载到加载器中，比如：Object，Date。ClassLoader在调用字节码解释器（将字节码翻译成机器识别的语言：0，1）或者JIT即使编译器（重复且特殊的代码放到这里，提高效率）来进行解释或编译，再由执行引擎进行执行，执行引擎下面就是操作系统和硬件了，流程如下：。</strong> </p>
+<p><img data-src="https://s3.bmp.ovh/imgs/2023/02/19/d3af3d419441902b.png" class="lazyload"></p>
+<p><strong>面试经典考题：为什么Java跨平台？</strong></p>
+<blockquote>
+<p>因为Java通过java编译为字节码文件，而这个JVM只跟你的字节码有关，跟操作系统无关。字节码符合JVM的规范，就可以给你运行，所以它也支持跨语言，比如scala，kolin，这些语言也符合JVM的规范。</p>
+</blockquote>
+<p><strong>JDK，JRE，JVM</strong></p>
+<blockquote>
+<p>JDK：包括JRE+开发工具包，负责开发。</p>
+<p>JRE：负责运行，只需要把.class文件交给他就行，包括JVM+核心类库（Object，Stream）。</p>
+<p>JVM：java虚拟机，把JVM流程说一遍得了。</p>
+</blockquote>
+<p><strong>Java属于什么语言</strong></p>
+<blockquote>
+<p><strong>混合型语言，即解释器+热点编译器（JIT）</strong>，可以进行参数设置修改成指定的模式，起始阶段采用解释执行，当发现某段特殊的代码执行频率特别高，就可以将这些交给热点编译器，生成本地代码，下次就不用再用解释器解释了，下次直接调用，提高效率。</p>
+</blockquote>
+<p><strong>JVM何时加载</strong></p>
+<blockquote>
+<p>大体可以说懒加载，但实际上你可以指定任何时候加载。</p>
+</blockquote>
+<p><strong>JVM什么时候加载</strong></p>
+<blockquote>
+<ul>
+<li>new 对象、访问静态实例，调用静态方法、但final除外，固定的，不需要初始化该类，就可以知道final的直；</li>
+<li>java.lang.reflect反射</li>
+<li>初始化子类时，父类优先被初始化</li>
+<li>虚拟机启动时，被执行的朱磊必须初始化</li>
+</ul>
+</blockquote>
+<h3 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h3><p><img data-src="https://s3.bmp.ovh/imgs/2023/02/20/14a41c73b4f8a3d8.png" class="lazyload"></p>
+<h4 id="①-加载"><a href="#①-加载" class="headerlink" title="① 加载"></a>① 加载</h4><blockquote>
+<p><strong>类加载进内存时注意：</strong>当.class文件通过类加载器加载到内存时，会分配<strong>两块内存</strong>，一块内存留给.class文件的代码，一块内存该.class的class对象，比如说：我加载了一个Person.class，此时会有Person的代码，还会产生Person的class对象，这就为我们反射提供了基础，所以说反射能够动态获取类的信息，因为程序在运行，该class对象存储到元空间哦，class对象帮我们解析好的字节码，所以我们才能调用，不能直接调用！！！</p>
+</blockquote>
+<p><img data-src="https://s3.bmp.ovh/imgs/2023/02/20/95e9f45e04d212ca.png" class="lazyload"></p>
+<p><strong>加载步骤：不同的类加载器负责加载不同的类；如下图</strong></p>
+<p><strong>① 首先会从下至上委托</strong></p>
+<ul>
+<li>会从Custom进行查找缓存中该类是否加载到内存，如果有则返回结果，无继续走；</li>
+<li>向上委托App查找…….如果有则返回结果，无继续走；</li>
+<li>向上委托Extension查找…….如果有则返回结果，无继续走；</li>
+<li>向上委托Bootstrap查找…….如果有则返回结果，无，向下委托。</li>
+</ul>
+<p><strong>② 其次以上步骤都找不到，从上至下委托</strong></p>
+<ul>
+<li>会从Bootsrap向下委托；</li>
+<li>Extension只负责加载他jar包的内容（jre/lib/ext/*.jar），找着了，加载进内存，如果该类不属于该加载器，向下委托；</li>
+<li>App只负责加载我们定义过的类…………..；</li>
+<li>Custom 只负责加载我们定义过的类…………如果该类不属于该加载器，抛异常（ClassNotFound）；</li>
+</ul>
+<p><strong>面试经典题：为什么要双亲委派机制？</strong></p>
+<blockquote>
+<p>主要是为了安全，比如我自己写一个自定义的java.lang.String类，通过自定义加载类加载进内存，然后打包成jar包，给客户，然后客户使用输入密码的时候，给自己发送一封邮件，这样就不安全了，密码泄露了，所以就有双亲委派，当看到Bootstrap时，就不会加载我们String类了。</p>
+</blockquote>
+<p><img data-src="https://s3.bmp.ovh/imgs/2023/02/20/edc3ee9499450028.png" class="lazyload"></p>
+<blockquote>
+<p>rt.jar存储着核心类比如：Object，String，所以该类属于Bootsrap类加载时，你调用类.class.getClassLoader时，输出的值为null，因为Boostrap类加载底层是由C++实现的，java没有类能跟他对应。</p>
+<p>APP这部分主要加载我们自己写的类，所以类.class.getClassLoader的时候都是自己的包路径。</p>
+</blockquote>
+<p><strong>类加载器范围（作用域）</strong></p>
+<p><code>可以自己打印出来看看，比如：sum.misc.Launcher$APPClassLoader@12qwe，其中中间的$符号代表Launcher类下的子类，所以可以到Launcher下查找范围，每个加载器的有不同的路径。通过字符串拼接</code></p>
+<h4 id="②-连接"><a href="#②-连接" class="headerlink" title="② 连接"></a>② 连接</h4><ol>
+<li><p>Verification（验证）</p>
+<p>验证文件是否符合JVM规范</p>
+</li>
+<li><p>Prepartaion（准备）</p>
+<p>静态成员变量赋初值</p>
+</li>
+<li><p>Resolution（解析）</p>
+<p>将类、方法、属性等符号引用解析为直接引用，常量池中的各种符号引用解析为指针、偏移量等内存地址的直接引用。 </p>
+<p>符号引用：我们用的是时候实际上指的是字符串，$，Luncher$APPClassLoader，所以就要通过偏移量计算得到内存地址。</p>
+</li>
+</ol>
+<h4 id="③-初始化"><a href="#③-初始化" class="headerlink" title="③ 初始化"></a>③ 初始化</h4><ol>
+<li>调用初始化代码</li>
+</ol>
+<p><strong>经典考题</strong></p>
+<p><img data-src="https://s3.bmp.ovh/imgs/2023/02/20/682587aee41ea9c9.png" class="lazyload"></p>
+<blockquote>
+<p>输出结果：3</p>
+<p><strong>加载 —》 连接（验证、准备、解析） —》 初始化</strong>记住这几个阶段。</p>
+<p><strong>①</strong> 首先加载阶段，将T.class加载进内存，通过我们的ClassLoader，因为这是我们自己自定义的类，所以就是APPClassLoader，<strong>②</strong> 进入链接阶段，先验证是否符合JVM的规范，在准备阶段对count给初值0，t初值为null，<strong>③</strong> 初始化阶段，count值赋值为2，t = new T（），t赋值了，走到构造方法，对count++，count值为3。</p>
+</blockquote>
+<p><img data-src="https://s3.bmp.ovh/imgs/2023/02/20/ba6563084ac7d5c0.png" class="lazyload"></p>
+<blockquote>
+<p>输出结果：2</p>
+<p><strong>加载 —》 链接（验证、准备、解析） —-》 初始化</strong>记住这几个阶段。</p>
+<p><strong>①</strong> 首先初始化加载阶段，因为调用了静态变量，所以会将该类加载进内存，先通过javac编译器，编译为字节码文件，再通过类加载器加载内存，因为这是我们自己写的类，所以属于APPClassLoader的范围，通过它进行加载。 <strong>②</strong> 连接阶段，Ⅰ 验证，先验证这段代码是否符合JVM规范，Ⅱ 准备，给静态变量赋初值，所以<strong>t = null，count = 0</strong>，Ⅲ……<strong>③</strong> 初始化 进行赋值操作，此时count = 0，t = new T()，走到构造方法，count++，count为1，继续走，count = 2，所以最终值为2。</p>
+</blockquote>
+<p><strong>经典考题：单例对象为何要加Volatile</strong></p>
+<p><img data-src="https://s3.bmp.ovh/imgs/2023/02/20/753a53c1b43ef19f.png" class="lazyload"></p>
+<blockquote>
+<p>首先，为了实现单个同一对象，因为不希望外部直接能创建新的对象，所以构造方法设为私有，使用static去修饰该类的对象，当然可以直接去实例化，但是这种我们不用到的时候会直接初始化，浪费资源，太着急了，这种叫饿汉式，所以进一步优化，直接创建一个方法，用来返回一个该类的对像，加上判断条件为空的时候才去创建，但是会产生多线程的问题，所以又在这个方法上，加了一个synchronize锁，但是这样效率也太低了，然后又在方法的内部进行了加锁，不过首先需要去判断对象是否为空，如果为空，再去锁住资源，但是多线程来的时候，第一个线程进来，判断为空，走到if和synchronized的中间就停了，第二线程拿到CPU的调度，此时，判断对象为空，继续往下走，拿到锁资源，并初始化对象，释放锁，但是第一个线程继续往下走，又创建了一个新的对象，为了解决这个问题，synchronized里外面和里面都加了检查，双重检查。</p>
+<p>votitle：细节如下。</p>
+</blockquote>
+<h2 id="对象创建过程"><a href="#对象创建过程" class="headerlink" title="对象创建过程"></a>对象创建过程</h2><p>当创建一个对象的时候，会去申请一块内存空间，当有成员变量时，比如 int a = 9，根据new，这个成员变量会先赋默认值，默认值为0，根据汇编指令，当继续往下走的时候，调用特殊的方法，也就是构造方法，才会去赋值给8。对象的创建过程有个半初始化过程，astore就是变量跟新new出来的对象之间建立关联。</p>
+<p><img data-src="https://s3.bmp.ovh/imgs/2023/02/20/f193880df38a6080.png" class="lazyload"></p>
+<h3 id="volatitle"><a href="#volatitle" class="headerlink" title="volatitle"></a>volatitle</h3><blockquote>
+<p>修饰一个变量时：① 代表线程之间可见， ② 禁止重排序</p>
+</blockquote>
+<blockquote>
+<p><strong>指令重排序：</strong> 因为CPU执行很快，做了很多优化，比如当执行两条不相关的指令时，指令1 - 去内存读取数据，但是内存比CPU很慢，需要CPU等待，所以先让指令2先走，必须两条指令无任何关系。</p>
+</blockquote>
+<blockquote>
+<p>线程导致指令重排：线程1进来，当创建一个对象的时候，会先去内存申请一块空间，然后，有成员变量时，会先赋初值，正好在这个时间，发生指令重排序，将执行构造方法的指令和连接的指令进行了一个重排序，先变量t连接到new 出来的对象，当前m = 0，这时线程2进来了，拿到m = 0这个值就去用了，并且不为空，单例里面就直接拿去用了，导致资源发生混乱。</p>
+</blockquote>
+<h3 id="对象如何定位"><a href="#对象如何定位" class="headerlink" title="对象如何定位"></a>对象如何定位</h3><blockquote>
+<p>分为句柄方式和直接方式（当前jdk使用）</p>
+</blockquote>
+<h3 id="对象怎么分配"><a href="#对象怎么分配" class="headerlink" title="对象怎么分配"></a>对象怎么分配</h3><p><img data-src="https://s3.bmp.ovh/imgs/2023/02/20/ce761f7588b61e3c.png" class="lazyload"></p>
+<p><strong>程序运行步骤（简化）</strong></p>
+<blockquote>
+<p>首先程序.exe在磁盘上，双击运行的时候，操作系统会从硬盘Load到内存，会在内存中形成一个进程，包括一条条的指令，一条条的数据，接下来，CPU会一点点拿到指令在内部执行，需要数据的时候再把数据读取过来。</p>
+</blockquote>
+<p><img data-src="https://s3.bmp.ovh/imgs/2023/02/20/9466da5eed26bdad.png" class="lazyload"></p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">覃烽</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/02/22/JVM/">http://example.com/2023/02/22/JVM/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com">LuckyFeng的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/java/">java    </a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="/img/wechat.jpg"><div class="post-qr-code__desc">微信</div></li><li class="reward-item"><img class="lazyload post-qr-code__img" src="/img/alipay.jpg"><div class="post-qr-code__desc">支付寶</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="next-post pull-full"><a href="/2022/02/06/Elasticsearch%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/"><img class="next_cover lazyload" data-src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>Elasticsearch搜索引擎</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2021/08/05/IO流/" title="IO流"><img class="relatedPosts_cover lazyload"data-src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><div class="relatedPosts_title">IO流</div></a></div><div class="relatedPosts_item"><a href="/2021/08/05/File类/" title="File类"><img class="relatedPosts_cover lazyload"data-src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><div class="relatedPosts_title">File类</div></a></div><div class="relatedPosts_item"><a href="/2021/07/31/String和StringBuilder/" title="String和StringBuilder"><img class="relatedPosts_cover lazyload"data-src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><div class="relatedPosts_title">String和StringBuilder</div></a></div><div class="relatedPosts_item"><a href="/2021/07/31/二维数组/" title="二维数组"><img class="relatedPosts_cover lazyload"data-src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><div class="relatedPosts_title">二维数组</div></a></div><div class="relatedPosts_item"><a href="/2021/07/31/static和单例模式/" title="static和单例模式"><img class="relatedPosts_cover lazyload"data-src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><div class="relatedPosts_title">static和单例模式</div></a></div><div class="relatedPosts_item"><a href="/2021/07/31/包装类/" title="包装类"><img class="relatedPosts_cover lazyload"data-src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><div class="relatedPosts_title">包装类</div></a></div></div><div class="clear_both"></div></div></div></div><footer id="footer" style="background-image: url(https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png)"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2023 By 覃烽</div><div class="framework-info"><span>驱动 </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly"><span>Butterfly</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script id="ribbon" src="/js/third-party/canvas-ribbon.js" size="150" alpha="0.6" zIndex="-1" mobile="true" data-click="true"></script><script id="ribbon_piao" mobile="true" src="/js/third-party/piao.js"></script><script id="canvas_nest" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="true" src="/js/third-party/canvas-nest.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
+</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script><script src="/js/third-party/click_heart.js"></script></body></html>
